@@ -10,8 +10,13 @@ export class Player extends app.api.Adapter<app.api.Entity> {
     readonly glowThroughWalls = new app.UInt8(app.entityOffsets.glowThroughWall),
     readonly lifeState = new app.UInt8(app.playerOffsets.lifeState),
     readonly viewAngles = new app.Vector(app.playerOffsets.viewAngles),
-    readonly bleedoutState = new app.UInt8(app.playerOffsets.bleedoutState)) {
-    super(new app.api.Entity(address, [localOrigin, teamNum, name, glowEnable, glowThroughWalls, lifeState, viewAngles, bleedoutState]));
+    readonly bleedoutState = new app.UInt8(app.playerOffsets.bleedoutState),
+    readonly zooming = new app.UInt8(app.playerOffsets.zooming),
+    readonly aimpunch = new app.Vector(app.playerOffsets.aimpunch),
+    readonly visiable_time = new app.Vector(app.entityOffsets.visible_time),
+
+    ) {
+    super(new app.api.Entity(address, [localOrigin, teamNum, name, glowEnable, glowThroughWalls, lifeState, viewAngles, bleedoutState, zooming, aimpunch, visiable_time]));
   }
 
   get isValid() {
@@ -19,7 +24,7 @@ export class Player extends app.api.Adapter<app.api.Entity> {
       && !this.lifeState.value
       && !app.shallowEquals(this.localOrigin.value, {x: 0, y: 0, z: 0});
   }
-  
+
   createColor(otherPlayer: app.Player) {
     return this.isSameTeam(otherPlayer)
       ? (this.bleedoutState.value ? '#FFFF00' : '#00FF00')
